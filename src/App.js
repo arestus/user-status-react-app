@@ -1,7 +1,9 @@
+import FormMain from './components/FormMain';
+
 function App() {
   return (
-    <div className="App">
-      <p>user-status</p>
+    <div>
+      <FormMain />
     </div>
   );
 }
