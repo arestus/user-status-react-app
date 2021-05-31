@@ -30,7 +30,7 @@ const FormMain = () => {
   };
 
   const onSubmit = data => {
-    console.log(data);
+    console.table(data);
     setLastTimeUpdate(DateOfLastUpdate());
   };
 
@@ -153,9 +153,15 @@ const FormMain = () => {
               <input
                 style={{ border: errors.email ? '1px solid #FF0000' : '' }}
                 className="input__field-email"
-                type="email"
                 name="email"
-                {...register('email', { required: 'Укажите E-mail' })}
+                {...register('email', {
+                  required: 'Укажите E-mail',
+                  pattern: {
+                    value: /\S+@\S+\.\S+/,
+                    message: 'Неверный E-mail',
+                  },
+                })}
+                type="email"
               />
               <span className="input__info">
                 Можно изменить адрес, указанный при регистрации.
