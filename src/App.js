@@ -1,4 +1,5 @@
 import FormMain from './components/FormMain';
+import './App.scss';
 
 function App() {
   return (
