@@ -1,12 +1,24 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
+import { useForm } from 'react-hook-form';
+import DateOfLastUpdate from '../../utils/DateForUpdate';
 import cities from '../../cities.json';
 
-import styles from './FormMain.module.css';
+// import styles from './FormMain.module.css';
 
 const FormMain = () => {
   const [status, setStatus] = useState('Прежде чем действовать, надо понять');
   const [value, setValue] = useState('');
-  const [input, setInput] = useState(false);
+  const [inputText, setInputText] = useState(false);
+  const [lastTimeUpdate, setLastTimeUpdate] = useState('');
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    watch,
+  } = useForm();
+
+  const password = useRef({});
+  password.current = watch('password', '');
 
   const handleChange = e => {
     setValue(e.target.value);
@@ -35,17 +47,22 @@ const FormMain = () => {
       return 0;
     });
 
-  const byAlpabate = [...biggestCity, ...withoutBiggestCity];
+  const byAlphabet = [...biggestCity, ...withoutBiggestCity];
+
+  const onSubmit = data => {
+    console.log(data);
+    setLastTimeUpdate(DateOfLastUpdate());
+  };
 
   return (
     <>
       <h1>Здравствуйте, Человек №3596941</h1>
 
-      <a href="/#" onClick={() => setInput(!input)}>
+      <a href="/#" onClick={() => setInputText(!inputText)}>
         Изменить статус
       </a>
 
-      {input && (
+      {inputText && (
         <form onSubmit={handleChangeStatus}>
           <input type="text" value={value} onChange={handleChange} />
           <button type="submit">Сменить статус</button>
@@ -54,10 +71,10 @@ const FormMain = () => {
 
       <p>{status}</p>
 
-      <div className={styles.container__form}>
-        <form className={styles.form}>
-          <select name="city" className={styles.form__select}>
-            {byAlpabate.map(({ city }, i) => (
+      <div>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <select name="city" {...register('city', { required: true })}>
+            {byAlphabet.map(({ city }, i) => (
               <option value={city} key={i}>
                 {city}
               </option>
@@ -66,12 +83,44 @@ const FormMain = () => {
 
           <label>
             <span>Пароль</span>
-            <input type="password" name="password" />
+            <input
+              type="password"
+              name="password"
+              {...register('password', {
+                required: 'Укажите пароль',
+                minLength: {
+                  value: 5,
+                  message: 'Используйте не менее 5 символов',
+                },
+                maxLength: {
+                  value: 15,
+                  message: 'Используйте не более  15 символов',
+                },
+              })}
+            />
+            {errors.password && <p>{errors.password.message}</p>}
             <span>Ваш новый пароль должен содержать не менее 5 символов.</span>
           </label>
           <label>
             <span>Пароль еще раз</span>
-            <input type="password" name="password" />
+            <input
+              type="password"
+              name="passwordRepeat"
+              {...register('passwordRepeat', {
+                validate: value =>
+                  value === password.current || 'Пароли не совпадают',
+                required: 'Укажите пароль',
+                minLength: {
+                  value: 5,
+                  message: 'Используйте не менее 5 символов',
+                },
+                maxLength: {
+                  value: 15,
+                  message: 'Используйте не более  15 символов',
+                },
+              })}
+            />
+            {errors.passwordRepeat && <p>{errors.passwordRepeat.message}</p>}
             <span>
               Повторите пароль, пожалуйста, это обезопасит вас с нами на случай
               ошибки.
@@ -79,7 +128,12 @@ const FormMain = () => {
           </label>
           <label>
             <span>Электронная почта</span>
-            <input type="email" name="email" />
+            <input
+              type="email"
+              name="email"
+              {...register('email', { required: 'Укажите E-mail' })}
+            />
+            {errors.email && <p>{errors.email.message}</p>}
             <span>Можно изменить адрес, указанный при регистрации.</span>
           </label>
           <label>
@@ -89,6 +143,7 @@ const FormMain = () => {
           </label>
           <button type="submit">Изменить</button>
         </form>
+        <p>последние изменения {lastTimeUpdate}</p>
       </div>
     </>
   );

@@ -2,7 +2,7 @@ import FormMain from './components/FormMain';
 
 function App() {
   return (
-    <div>
+    <div className="container">
       <FormMain />
     </div>
   );
