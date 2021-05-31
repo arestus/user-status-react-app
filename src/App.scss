@@ -1,3 +1,11 @@
 .container {
-  margin: 90px 90px 0 100px;
+  margin: 90px 90px 60px 100px;
+  font-family: Arial;
+  font-style: normal;
+  font-weight: normal;
+  @media screen and (max-width: 767px) {
+    margin: 90px 60px 60px 60px;
+  }
+  @media screen and (min-width: 768px) and (max-width: 1199px) {
+  }
 }

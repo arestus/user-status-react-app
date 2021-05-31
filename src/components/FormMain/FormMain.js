@@ -26,6 +26,7 @@ const FormMain = () => {
   const handleChangeStatus = e => {
     e.preventDefault();
     setStatus(value);
+    setValue(value);
   };
 
   const onSubmit = data => {
@@ -42,7 +43,7 @@ const FormMain = () => {
 
         <a
           href="/#"
-          className="ref_button"
+          className="ref__button"
           onClick={() => setInputText(!inputText)}
         >
           Сменить статус
@@ -51,8 +52,15 @@ const FormMain = () => {
 
       {inputText ? (
         <form onSubmit={handleChangeStatus} className="form__status">
-          <input type="text" value={value} onChange={handleChange} />
-          <button type="submit">Сменить статус</button>
+          <input
+            className="form__status-input"
+            type="text"
+            value={value}
+            onChange={handleChange}
+          />
+          <button className="form__status-button" type="submit">
+            +
+          </button>
         </form>
       ) : (
         <p className="header__status">{status}</p>
@@ -75,7 +83,7 @@ const FormMain = () => {
             </select>
           </div>
           <div className="form__password">
-            <label>
+            <label className="form__label">
               <span className="input__password">Пароль</span>
               <input
                 style={{ border: errors.password ? '1px solid #FF0000' : '' }}
@@ -105,7 +113,7 @@ const FormMain = () => {
             </label>
           </div>
           <div className="form__passwordRepeat">
-            <label>
+            <label className="form__label">
               <span className="input__password">Пароль еще раз</span>
               <input
                 style={{
@@ -140,7 +148,7 @@ const FormMain = () => {
             </label>
           </div>
           <div className="form__email">
-            <label>
+            <label className="form__label">
               <span className="input__email">Электронная почта</span>
               <input
                 style={{ border: errors.email ? '1px solid #FF0000' : '' }}
@@ -160,7 +168,7 @@ const FormMain = () => {
             </label>
           </div>
           <div className="form__checkbox">
-            <label>
+            <label className="form__label">
               <span className="input__checkbox">Я согласен</span>
               <input
                 type="checkbox"
