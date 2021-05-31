@@ -17,11 +17,31 @@ const FormMain = () => {
     setStatus(value);
   };
 
+  const biggestCity = [...cities]
+    .sort((a, b) => b.population - a.population)
+    .splice(0, 1);
+
+  const withoutBiggestCity = [...cities]
+    .sort((a, b) => a.population - b.population)
+    .splice(0, 22)
+    .filter(city => city.population > 50000)
+    .sort(function (a, b) {
+      if (a.city < b.city) {
+        return -1;
+      }
+      if (a.city > b.city) {
+        return 1;
+      }
+      return 0;
+    });
+
+  const byAlpabate = [...biggestCity, ...withoutBiggestCity];
+
   return (
     <>
       <h1>Здравствуйте, Человек №3596941</h1>
 
-      <a href="#" onClick={() => setInput(!input)}>
+      <a href="/#" onClick={() => setInput(!input)}>
         Изменить статус
       </a>
 
@@ -36,36 +56,37 @@ const FormMain = () => {
 
       <div className={styles.container__form}>
         <form className={styles.form}>
-          <select className={styles.form__select}>
-            {cities.map((option, i) => (
-              <option value={option.city} key={i}>
-                {option.city}
+          <select name="city" className={styles.form__select}>
+            {byAlpabate.map(({ city }, i) => (
+              <option value={city} key={i}>
+                {city}
               </option>
             ))}
           </select>
-          <div className={styles.form__field}>
-            <label>Пароль</label>
-            <input type="text" />
+
+          <label>
+            <span>Пароль</span>
+            <input type="password" name="password" />
             <span>Ваш новый пароль должен содержать не менее 5 символов.</span>
-          </div>
-          <div className={styles.form__field}>
-            <label>Пароль еще раз</label>
-            <input type="text" />
+          </label>
+          <label>
+            <span>Пароль еще раз</span>
+            <input type="password" name="password" />
             <span>
               Повторите пароль, пожалуйста, это обезопасит вас с нами на случай
               ошибки.
             </span>
-          </div>
-          <div className={styles.form__field}>
-            <label>Электронная почта</label>
-            <input type="text" />
+          </label>
+          <label>
+            <span>Электронная почта</span>
+            <input type="email" name="email" />
             <span>Можно изменить адрес, указанный при регистрации.</span>
-          </div>
-          <div className={styles.form__field}>
-            <label>Я согласен</label>
-            <input type="checkbox" />
+          </label>
+          <label>
+            <span>Я согласен</span>
+            <input type="checkbox" name="checkbox" />
             <span>принимать актуальную информацию на емейл</span>
-          </div>
+          </label>
           <button type="submit">Изменить</button>
         </form>
       </div>
