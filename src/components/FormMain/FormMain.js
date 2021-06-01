@@ -42,7 +42,7 @@ const FormMain = () => {
         </h1>
 
         <a
-          href="/#"
+          // href=""
           className="ref__button"
           onClick={() => setInputText(!inputText)}
         >
